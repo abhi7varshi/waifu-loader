@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".WaifuApp"
+        android:name=".WaifuApplication"
         android:theme="@style/Theme.WaifuLoader">
         <activity
             android:name=".MainActivity"
