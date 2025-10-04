@@ -43,6 +43,12 @@ android {
 }
 
 dependencies {
+    //retrofit
+    val retrofitVersion = "2.11.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-kotlinx-serialization:$retrofitVersion")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.1.0")
+
     //jetpack navigation
     val nav_version = "2.9.5"
     implementation("androidx.navigation:navigation-compose:$nav_version")
