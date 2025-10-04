@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -40,6 +42,17 @@ android {
 }
 
 dependencies {
+    //hilt
+    implementation("com.google.dagger:hilt-android:2.57.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
+    ksp("com.google.dagger:hilt-android-compiler:2.57.1")
+
+    //view model
+    val lifecycle_version = "2.9.4"
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:${lifecycle_version}")
+    ksp("androidx.lifecycle:lifecycle-compiler:$lifecycle_version")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
