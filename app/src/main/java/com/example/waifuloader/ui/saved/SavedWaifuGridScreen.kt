@@ -3,6 +3,7 @@
 package com.example.waifuloader.ui.saved
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.waifuloader.data.models.Waifu
@@ -30,21 +32,21 @@ import com.example.waifuloader.ui.saved.composables.SavedWaifuCard
 
 @Composable
 fun SavedWaifuGridRoute(
-    onImageClick: (String) -> Unit = {},
+    onWaifuClick: (String) -> Unit = {},
     onBackClick: () -> Unit = {}
 ) {
     val waifus by LocalWaifuStore.current.waifuList.collectAsState()
 
     SavedWaifuGridScreen(
-        images = waifus,
-        onWaifuClick = onImageClick,
+        waifus = waifus,
+        onWaifuClick = onWaifuClick,
         onBackClick = onBackClick
     )
 }
 
 @Composable
 fun SavedWaifuGridScreen(
-    images: List<Waifu>,
+    waifus: List<Waifu>,
     onWaifuClick: (String) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -67,14 +69,24 @@ fun SavedWaifuGridScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(images) { waifu ->
-                    SavedWaifuCard(waifu = waifu, onClick = { onWaifuClick(waifu.id) })
+            if (!waifus.isEmpty()) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(waifus) { waifu ->
+                        SavedWaifuCard(waifu = waifu, onClick = { onWaifuClick(waifu.id) })
+                    }
+                }
+            } else {
+                Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(
+                        text = "Didn't find any waifu's, Go! Save up some cutie waifu's <3",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = modifier.padding(24.dp)
+                    )
                 }
             }
         }

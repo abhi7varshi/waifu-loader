@@ -44,7 +44,7 @@ fun WaifuApp() {
                 // 🗂️ Saved Grid
                 composable<SavedWaifuGridRoute> {
                     SavedWaifuGridRoute(
-                        onImageClick = { id ->
+                        onWaifuClick = { id ->
                             navController.navigate(SavedWaifuRoute(id = id))
                         },
                         onBackClick = { navController.popBackStack() }
