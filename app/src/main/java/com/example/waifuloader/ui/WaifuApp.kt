@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.waifuloader.ui.home.HomeScreen
-import com.example.waifuloader.ui.saved.SavedScreen
+import com.example.waifuloader.ui.home.HomeRoute
+import com.example.waifuloader.ui.saved.SavedRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,16 +28,12 @@ fun WaifuApp(modifier: Modifier = Modifier) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            NavHost(navController = navController, startDestination = HomeRoute) {
+            NavHost(navController = navController, startDestination = SavedRoute) {
                 composable<HomeRoute> {
-                    HomeScreen(onNavigateToSaved = {
-                        navController.navigate(route = SavedRoute)
-                    })
+                    HomeRoute()
                 }
                 composable<SavedRoute> {
-                    SavedScreen(onBack = {
-                        navController.navigateUp()
-                    })
+                    SavedRoute()
                 }
             }
         }

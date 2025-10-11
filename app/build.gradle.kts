@@ -43,6 +43,9 @@ android {
 }
 
 dependencies {
+    //coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
     //retrofit
     val retrofitVersion = "2.11.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")

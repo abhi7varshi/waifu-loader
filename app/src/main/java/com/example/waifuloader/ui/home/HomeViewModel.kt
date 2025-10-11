@@ -12,11 +12,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-data class HomeUiState(
-    val isLoading: Boolean = false
-)
-
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val waifuRepository: WaifuRepository
@@ -33,6 +28,7 @@ class HomeViewModel @Inject constructor(
             when (result) {
                 is NetworkResult.Success -> {
                     Log.d(TAG, "image data: ${result.data}")
+                    _uiState.update { it.copy(currentImageUrl = result.data.url) }
                 }
 
                 is NetworkResult.Error -> {
