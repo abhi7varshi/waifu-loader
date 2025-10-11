@@ -1,6 +1,8 @@
 package com.example.waifuloader.ui.home
 
+import com.example.waifuloader.data.models.Waifu
+
 data class HomeUiState(
     val isLoading: Boolean = false,
-    val currentImageUrl: String = ""
+    val currentWaifu: Waifu = Waifu("", "")
 )

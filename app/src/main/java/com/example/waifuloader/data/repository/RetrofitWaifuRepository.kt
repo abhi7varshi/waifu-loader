@@ -1,7 +1,7 @@
 package com.example.waifuloader.data.repository
 
 import com.example.waifuloader.data.WaifuRepository
-import com.example.waifuloader.data.models.ImageData
+import com.example.waifuloader.data.models.Waifu
 import com.example.waifuloader.data.models.NetworkResult
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
@@ -36,7 +36,7 @@ class RetrofitWaifuRepository @Inject constructor(
         .build()
         .create(NetworkApi::class.java)
 
-    override suspend fun getWaifuInfo(): NetworkResult<ImageData> {
+    override suspend fun getWaifuInfo(): NetworkResult<Waifu> {
         return try {
             val response = networkApi.getWaifu(tag = "maid")
 
@@ -65,12 +65,12 @@ class RetrofitWaifuRepository @Inject constructor(
                 val imageId = imageObj["image_id"]?.toString()?.trim('"') ?: ""
                 val url = imageObj["url"]?.toString()?.trim('"') ?: ""
 
-                val imageData = ImageData(
-                    imageId = imageId,
+                val waifu = Waifu(
+                    id = imageId,
                     url = url
                 )
 
-                NetworkResult.Success(imageData)
+                NetworkResult.Success(waifu)
             } else {
                 // HTTP-level error
                 NetworkResult.Error(

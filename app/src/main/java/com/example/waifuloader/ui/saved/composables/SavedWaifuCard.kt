@@ -20,18 +20,18 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import com.example.waifuloader.R
-import com.example.waifuloader.data.models.ImageData
+import com.example.waifuloader.data.models.Waifu
 
 @Composable
 fun SavedWaifuCard(
-    imageData: ImageData,
+    waifu: Waifu,
     onClick: () -> Unit
 ) {
     var isLoading by remember { mutableStateOf(true) }
     var isError by remember { mutableStateOf(false) }
 
     val imageLoader = rememberAsyncImagePainter(
-        model = imageData.url,
+        model = waifu.url,
         onState = { state ->
             isLoading = state is AsyncImagePainter.State.Loading
             isError = state is AsyncImagePainter.State.Error

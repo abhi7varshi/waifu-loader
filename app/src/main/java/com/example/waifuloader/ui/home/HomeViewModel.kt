@@ -28,7 +28,7 @@ class HomeViewModel @Inject constructor(
             when (result) {
                 is NetworkResult.Success -> {
                     Log.d(TAG, "image data: ${result.data}")
-                    _uiState.update { it.copy(currentImageUrl = result.data.url) }
+                    _uiState.update { it.copy(currentWaifu = result.data) }
                 }
 
                 is NetworkResult.Error -> {

@@ -7,4 +7,7 @@ import kotlinx.serialization.Serializable
 data object HomeRoute
 
 @Serializable
-data object SavedRoute
+data object SavedWaifuGridRoute
+
+@Serializable
+data class SavedWaifuRoute(val id: String)

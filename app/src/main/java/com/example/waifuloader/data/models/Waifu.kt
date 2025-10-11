@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ImageData(
-    @SerialName("image_id") val imageId: String = "",
+data class Waifu(
+    @SerialName("image_id") val id: String = "",
     val url: String = ""
 )
