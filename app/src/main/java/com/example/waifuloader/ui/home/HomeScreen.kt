@@ -44,12 +44,16 @@ fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel(),
     onNavigateToSaved: () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
     val waifuStore = LocalWaifuStore.current
+    val currentWaifu by waifuStore.currentWaifu.collectAsState()
+
+    val uiState by viewModel.uiState.collectAsState()
 
     HomeScreen(
         uiState = uiState,
-        onGetWaifu = viewModel::getWaifu,
+        currentWaifu = currentWaifu,
+        onGetWaifu = { viewModel.getWaifu() },
+        onNewWaifuLoaded = { waifu -> waifuStore.setCurrentWaifu(waifu) },
         onNavigateToSaved = onNavigateToSaved,
         onSaveWaifu = { waifu -> waifuStore.saveWaifu(waifu) }
     )
@@ -58,22 +62,39 @@ fun HomeRoute(
 @Composable
 fun HomeScreen(
     uiState: HomeUiState,
+    currentWaifu: Waifu,
     onGetWaifu: () -> Unit,
+    onNewWaifuLoaded: (Waifu) -> Unit,
     onNavigateToSaved: () -> Unit,
     onSaveWaifu: (Waifu) -> Unit,
 ) {
     var isLoading by remember { mutableStateOf(true) }
     var isError by remember { mutableStateOf(false) }
 
+    // Use current waifu if already set, otherwise from uiState
+    val waifuToShow = if (currentWaifu.id.isNotEmpty()) currentWaifu else uiState.currentWaifu
+
     val imageLoader = rememberAsyncImagePainter(
-        model = uiState.currentWaifu.url,
+        model = waifuToShow.url,
         onState = { state ->
             isLoading = state is AsyncImagePainter.State.Loading
             isError = state is AsyncImagePainter.State.Error
         },
     )
 
-    LaunchedEffect(Unit) { onGetWaifu() }
+    // Only fetch waifu if there's no current one in the store
+    LaunchedEffect(Unit) {
+        if (currentWaifu.id.isEmpty()) {
+            onGetWaifu()
+        }
+    }
+
+    // When new waifu is loaded, update the store
+    LaunchedEffect(uiState.currentWaifu) {
+        if (uiState.currentWaifu.id.isNotEmpty() && uiState.currentWaifu != currentWaifu) {
+            onNewWaifuLoaded(uiState.currentWaifu)
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -112,11 +133,13 @@ fun HomeScreen(
                     .padding(24.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                FloatingActionButton(onClick = { onSaveWaifu(uiState.currentWaifu) }) {
+                FloatingActionButton(onClick = { onSaveWaifu(waifuToShow) }) {
                     Icon(Icons.Outlined.FavoriteBorder, contentDescription = "Save image")
                 }
 
-                FloatingActionButton(onClick = { onGetWaifu() }) {
+                FloatingActionButton(onClick = {
+                    onGetWaifu()
+                }) {
                     Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Next image")
                 }
             }
