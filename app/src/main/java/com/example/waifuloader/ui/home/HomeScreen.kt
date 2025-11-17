@@ -2,6 +2,7 @@
 
 package com.example.waifuloader.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -72,6 +74,7 @@ fun HomeScreen(
     onNavigateToSaved: () -> Unit,
     onSaveWaifu: (Waifu) -> Unit,
 ) {
+    var TAG = "HomeScreen"
     var isLoading by remember { mutableStateOf(true) }
     var isError by remember { mutableStateOf(false) }
 
@@ -157,6 +160,13 @@ fun HomeScreen(
                     onGetWaifu()
                 }) {
                     Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Next image")
+                }
+
+                FloatingActionButton(onClick = {
+//                    TODO: Navigate to settings page.
+                    Log.d(TAG, " Navigated to Settings Page.")
+                }) {
+                    Icon(Icons.Default.Settings, contentDescription = "Settings page.")
                 }
             }
         }
